@@ -1,0 +1,53 @@
+{
+  "name": "@swarm-kit/diagrams",
+  "version": "0.1.0",
+  "description": "Renders Structurizr DSL workspaces with the Assembly design system: PNG, SVG, embeddable HTML, and laid-out JSON.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "swarm-kit-diagram": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "vendor": "node scripts/vendor.mjs",
+    "build": "tsx scripts/build.mts",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx scripts/build.mts && vitest run",
+    "dev": "tsx src/cli.ts",
+    "examples": "tsx scripts/examples.mts",
+    "prepare": "tsx scripts/build.mts"
+  },
+  "dependencies": {
+    "playwright-core": "^1.57.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "clsx": "^2.1.1",
+    "elkjs": "^0.12.0",
+    "esbuild": "^0.27.0",
+    "postcss": "^8.5.6",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "tailwind-merge": "^3.4.0",
+    "tsx": "^4.21.0",
+    "typescript": "5.9.3",
+    "vitest": "^4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swarm-kit/swarm-kit-diagram.git"
+  },
+  "homepage": "https://github.com/swarm-kit/swarm-kit-diagram#readme"
+}

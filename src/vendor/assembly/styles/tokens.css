@@ -1,0 +1,200 @@
+/* Assembly design tokens: colour (light and dark), spacing, radius, fonts, motion, and the type-style classes.
+   The same tokens with usage notes are in tokens.json, which the documentation site reads. */
+:root,
+[data-theme="light"] {
+  --surface: #faf8f4;
+  --surface-raised: #ffffff;
+  --surface-sunken: #f1eee7;
+  --ink: #1b1a17;
+  --ink-muted: #5e5a52;
+  --border: #e3ded4;
+  --border-strong: #8c867b;
+  --amber: #f2a516;
+  --on-amber: #1b1a17;
+  --amber-soft: #fcebc4;
+  --amber-text: #8a5a00;
+  --amber-strong: #dc9410;
+  --neutral-soft: #ebe7df;
+  --graphite: #16161a;
+  --scrim: rgba(22, 22, 26, 0.48);
+  --canvas-dot: #cfc8ba;
+  --success: #1e7a4e;
+  --success-soft: #e3f2ea;
+  --danger: #b8322a;
+  --danger-soft: #f8e1de;
+  --on-danger: #ffffff;
+  --chart-1: #c98300;
+  --chart-2: #0e9488;
+  --chart-3: #5b5bd6;
+  --chart-4: #d24f86;
+  --chart-5: #3d7fd0;
+  --chart-muted: #d9d3c7;
+  --focus-ring: var(--amber-text);
+  --shadow-overlay: 0 8px 24px rgba(27, 26, 23, 0.12);
+}
+[data-theme="dark"] {
+  --surface: #121214;
+  --surface-raised: #1c1c20;
+  --surface-sunken: #0b0b0d;
+  --ink: #f2efea;
+  --ink-muted: #a19d95;
+  --border: #2a2a2f;
+  --border-strong: #6e6e77;
+  --amber: #f5b43a;
+  --on-amber: #1b1a17;
+  --amber-soft: #43320f;
+  --amber-text: #f5b43a;
+  --amber-strong: #f7c25e;
+  --neutral-soft: #26262c;
+  --graphite: #26262c;
+  --scrim: rgba(0, 0, 0, 0.64);
+  --canvas-dot: #34343c;
+  --success: #3dc98a;
+  --success-soft: #12301f;
+  --danger: #f06a5f;
+  --danger-soft: #3a1714;
+  --on-danger: #1b1a17;
+  --chart-1: #c08400;
+  --chart-2: #11968b;
+  --chart-3: #6e72e0;
+  --chart-4: #d4578b;
+  --chart-5: #4686d3;
+  --chart-muted: #3a3a42;
+  --focus-ring: var(--amber);
+  --shadow-overlay: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-pill: 999px;
+  --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  /* Motion. Durations by distance: fast for a control changing state in place, base for a
+     popup appearing, slow for a panel or bar travelling across the screen. Easings by role:
+     enter decelerates into place, exit accelerates away, move does both between two states. */
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --easing-enter: cubic-bezier(0.2, 0, 0, 1);
+  --easing-exit: cubic-bezier(0.4, 0, 1, 1);
+  --easing-move: cubic-bezier(0.4, 0, 0.2, 1);
+}
+/* Reduced motion: every transition built on the duration tokens becomes instant, in one place.
+   Looping animations (spinners, shimmer) opt out next to their own rules. */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-fast: 0ms;
+    --duration-base: 0ms;
+    --duration-slow: 0ms;
+  }
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/space-grotesk-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Grotesk";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/space-grotesk-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-500-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Inter";
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/inter-latin-600-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-latin-400-normal.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-latin-500-normal.woff2") format("woff2");
+}
+.display-xl {
+  font-family: var(--font-display);
+  font-size: 56px;
+  line-height: 60px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.heading-1 {
+  font-family: var(--font-display);
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+.heading-2 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.heading-3 {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+}
+.body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+}
+.body-small {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+}
+.label {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.code {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 20px;
+  font-weight: 400;
+}

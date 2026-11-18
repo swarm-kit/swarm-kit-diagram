@@ -1,0 +1,1264 @@
+/* Vendored from @swarm-kit/assembly@0.7.0 components.css: only the rules the diagram components render. */
+.sk-icon {
+  flex: none;
+  display: block;
+}
+.sk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 36px;
+  padding: 0 var(--space-4);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fast) var(--easing-move),
+    border-color var(--duration-fast) var(--easing-move),
+    color var(--duration-fast) var(--easing-move);
+}
+.sk-btn--sm {
+  height: 28px;
+  padding: 0 12px;
+  font-size: 13px;
+  gap: 6px;
+}
+.sk-btn--icon {
+  width: 36px;
+  padding: 0;
+}
+.sk-btn--sm.sk-btn--icon {
+  width: 28px;
+}
+.sk-btn:focus-visible {
+  outline: none;
+  box-shadow:
+    0 0 0 2px var(--surface),
+    0 0 0 4px var(--focus-ring);
+}
+.sk-btn:disabled {
+  cursor: not-allowed;
+}
+
+.sk-btn--primary {
+  background: var(--amber);
+  color: var(--on-amber);
+}
+.sk-btn--primary:hover:not(:disabled) {
+  background: var(--amber-strong);
+}
+.sk-btn--secondary {
+  background: var(--surface-raised);
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+.sk-btn--secondary:hover:not(:disabled) {
+  background: var(--surface-sunken);
+}
+.sk-btn--quiet {
+  background: transparent;
+  color: var(--ink);
+}
+.sk-btn--quiet:hover:not(:disabled) {
+  background: var(--neutral-soft);
+}
+.sk-btn--danger {
+  background: var(--danger);
+  color: var(--on-danger);
+}
+.sk-btn--danger:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+.sk-btn:disabled:not(.is-loading) {
+  background: var(--neutral-soft);
+  color: var(--ink-muted);
+  border-color: transparent;
+}
+.sk-btn--quiet:disabled:not(.is-loading) {
+  background: transparent;
+}
+
+.sk-spinner {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  animation: sk-spin 0.8s linear infinite;
+}
+@keyframes sk-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sk-spinner {
+    animation: none;
+  }
+}
+
+.sk-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+.sk-canvas {
+  position: relative;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background-color: var(--surface-sunken);
+  background-image: radial-gradient(circle at 1px 1px, var(--canvas-dot) 1px, transparent 1.5px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: grab;
+}
+.sk-canvas:active {
+  cursor: grabbing;
+}
+.sk-canvas__world {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+.sk-canvas__edges {
+  position: absolute;
+  left: 0;
+  top: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.sk-canvas__ui {
+  position: absolute;
+  z-index: 5;
+  cursor: default;
+}
+.sk-canvas__zoom {
+  left: 12px;
+  bottom: 12px;
+}
+.sk-canvas__mini {
+  right: 12px;
+  bottom: 12px;
+}
+.sk-ctool {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-overlay);
+}
+.sk-ctool__zoom {
+  min-width: 44px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.sk-ctool__sep {
+  width: 1px;
+  height: 16px;
+  margin: 0 4px;
+  background: var(--border);
+}
+.sk-mini {
+  display: block;
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-overlay);
+}
+.sk-mini__node {
+  fill: var(--border-strong);
+}
+.sk-mini__node.is-selected,
+.sk-mini__node.is-running {
+  fill: var(--amber);
+}
+.sk-mini__node.is-failed {
+  fill: var(--danger);
+}
+.sk-mini__view {
+  fill: none;
+  stroke: var(--ink-muted);
+  stroke-width: 1;
+}
+@property --sk-beam-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+@property --sk-beam-level {
+  syntax: "<number>";
+  inherits: false;
+  initial-value: 1;
+}
+@property --sk-beam-on {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+.sk-beam {
+  --sk-beam-color: var(--amber);
+  --sk-beam-width: 1px;
+  --sk-beam-on: 0;
+  position: relative;
+  isolation: isolate;
+  border-radius: var(--radius-md);
+  transition: --sk-beam-on var(--duration-slow) var(--easing-exit);
+}
+.sk-beam.is-active {
+  --sk-beam-on: 1;
+  transition-timing-function: var(--easing-enter);
+}
+.sk-beam__ring,
+.sk-beam__glow {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.sk-beam__ring {
+  z-index: 1;
+  padding: var(--sk-beam-width);
+  opacity: calc(var(--sk-beam-on) * var(--sk-beam-level));
+  mask:
+    linear-gradient(black, black) content-box exclude,
+    linear-gradient(black, black);
+}
+.sk-beam__glow {
+  z-index: -1;
+  filter: blur(10px);
+  opacity: calc(var(--sk-beam-on) * var(--sk-beam-level) * 0.7);
+}
+.sk-beam--pulse .sk-beam__ring,
+.sk-beam--pulse .sk-beam__glow {
+  background: var(--sk-beam-color);
+  animation: sk-beam-breathe 2.4s ease-in-out infinite;
+}
+.sk-beam--pulse .sk-beam__glow {
+  inset: -2px;
+}
+@keyframes sk-beam-breathe {
+  0%,
+  100% {
+    --sk-beam-level: 0.3;
+  }
+  50% {
+    --sk-beam-level: 1;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sk-beam .sk-beam__ring,
+  .sk-beam .sk-beam__glow {
+    animation: none;
+    --sk-beam-level: 0.6;
+  }
+}
+.sk-diagram-node,
+.sk-diagram-node-swatch {
+  --dn-fill: var(--surface-raised);
+  --dn-stroke: var(--border-strong);
+  --dn-accent: var(--ink-muted);
+  --dn-soft: var(--neutral-soft);
+}
+.sk-diagram-node--brand {
+  --dn-fill: color-mix(in oklab, var(--amber) 9%, var(--surface-raised));
+  --dn-stroke: var(--amber);
+  --dn-accent: var(--amber-text);
+  --dn-soft: var(--amber-soft);
+}
+.sk-diagram-node--info {
+  --dn-fill: color-mix(in oklab, var(--chart-5) 9%, var(--surface-raised));
+  --dn-stroke: var(--chart-5);
+  --dn-accent: var(--chart-5);
+  --dn-soft: color-mix(in oklab, var(--chart-5) 16%, var(--surface-raised));
+}
+.sk-diagram-node--success {
+  --dn-fill: color-mix(in oklab, var(--success) 8%, var(--surface-raised));
+  --dn-stroke: var(--success);
+  --dn-accent: var(--success);
+  --dn-soft: var(--success-soft);
+}
+.sk-diagram-node--warn {
+  --dn-fill: color-mix(in oklab, var(--amber-strong) 10%, var(--surface-raised));
+  --dn-stroke: var(--amber-strong);
+  --dn-accent: var(--amber-text);
+  --dn-soft: var(--amber-soft);
+}
+.sk-diagram-node--danger {
+  --dn-fill: color-mix(in oklab, var(--danger) 8%, var(--surface-raised));
+  --dn-stroke: var(--danger);
+  --dn-accent: var(--danger);
+  --dn-soft: var(--danger-soft);
+}
+.sk-diagram-node.is-external,
+.sk-diagram-node-swatch.is-external {
+  --dn-fill: var(--neutral-soft);
+  --dn-stroke: var(--border-strong);
+  --dn-accent: var(--ink-muted);
+}
+.sk-diagram-node {
+  position: relative;
+  flex: none;
+  box-sizing: border-box;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  outline: none;
+  transition:
+    opacity var(--duration-base) var(--easing-move),
+    filter var(--duration-base) var(--easing-move);
+}
+.sk-diagram-node__shape {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  filter: drop-shadow(0 1px 2px color-mix(in oklab, var(--ink) 12%, transparent));
+  transition: filter var(--duration-base) var(--easing-move);
+}
+.sk-diagram-node__back,
+.sk-diagram-node__body {
+  fill: var(--dn-fill);
+  stroke: var(--dn-stroke);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+  transition:
+    stroke var(--duration-fast) var(--easing-move),
+    stroke-width var(--duration-fast) var(--easing-move);
+}
+.sk-diagram-node__back {
+  opacity: 0.7;
+}
+.sk-diagram-node__detail {
+  fill: none;
+  stroke: var(--dn-stroke);
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.sk-diagram-node__mark {
+  fill: color-mix(in oklab, var(--dn-stroke) 30%, var(--ink));
+  stroke: none;
+}
+.sk-diagram-node__content {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  text-align: center;
+  overflow: hidden;
+}
+.sk-diagram-node__type {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dn-accent);
+}
+.sk-diagram-node__icon {
+  flex: none;
+}
+.sk-diagram-node__title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.sk-diagram-node__technology {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+  color: var(--ink-muted);
+}
+.sk-diagram-node__description {
+  display: -webkit-box;
+  margin-top: 4px;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  font-size: 12px;
+  line-height: 17px;
+  color: var(--ink-muted);
+}
+.sk-diagram-node.is-external .sk-diagram-node__title {
+  color: var(--ink-muted);
+}
+.sk-diagram-node.is-compact .sk-diagram-node__title {
+  font-size: 16px;
+  line-height: 22px;
+}
+.sk-diagram-node:hover .sk-diagram-node__shape {
+  filter: drop-shadow(0 4px 10px color-mix(in oklab, var(--ink) 14%, transparent));
+}
+.sk-diagram-node:focus-visible .sk-diagram-node__body {
+  stroke: var(--focus-ring);
+  stroke-width: 2.5;
+}
+.sk-diagram-node.is-highlighted .sk-diagram-node__body {
+  stroke: color-mix(in oklab, var(--amber) 70%, var(--dn-stroke));
+  stroke-width: 2;
+}
+.sk-diagram-node.is-selected .sk-diagram-node__body {
+  stroke: var(--amber);
+  stroke-width: 2.5;
+}
+.sk-diagram-node.is-selected .sk-diagram-node__shape {
+  filter: drop-shadow(var(--shadow-overlay));
+}
+.sk-diagram-node.is-dimmed {
+  opacity: 0.35;
+  filter: saturate(0.5);
+}
+.sk-diagram-node__status {
+  position: absolute;
+  top: -9px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 16px;
+  white-space: nowrap;
+  background: var(--neutral-soft);
+  color: var(--ink-muted);
+}
+.sk-diagram-node__status::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+.sk-diagram-node__status--brand,
+.sk-diagram-node__status--warn {
+  background: var(--amber-soft);
+  border-color: color-mix(in oklab, var(--amber) 40%, transparent);
+  color: var(--amber-text);
+}
+.sk-diagram-node__status--info {
+  background: color-mix(in oklab, var(--chart-5) 14%, var(--surface-raised));
+  border-color: color-mix(in oklab, var(--chart-5) 40%, transparent);
+  color: var(--chart-5);
+}
+.sk-diagram-node__status--success {
+  background: var(--success-soft);
+  border-color: color-mix(in oklab, var(--success) 40%, transparent);
+  color: var(--success);
+}
+.sk-diagram-node__status--danger {
+  background: var(--danger-soft);
+  border-color: color-mix(in oklab, var(--danger) 40%, transparent);
+  color: var(--danger);
+}
+.sk-diagram-node__handle {
+  position: absolute;
+  z-index: 1;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  box-sizing: border-box;
+  border: 2px solid var(--amber);
+  border-radius: var(--radius-pill);
+  background: var(--surface-raised);
+  cursor: crosshair;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.6);
+  transition:
+    opacity var(--duration-fast) var(--easing-enter),
+    transform var(--duration-fast) var(--easing-enter),
+    background var(--duration-fast) var(--easing-move);
+}
+.sk-diagram-node:hover .sk-diagram-node__handle,
+.sk-diagram-node:focus-visible .sk-diagram-node__handle,
+.sk-diagram-node.is-selected .sk-diagram-node__handle {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+.sk-diagram-node .sk-diagram-node__handle:hover {
+  background: var(--amber);
+  transform: scale(1.25);
+}
+.sk-diagram-node-swatch {
+  display: inline-block;
+  flex: none;
+  overflow: visible;
+  vertical-align: middle;
+}
+.sk-diagram-group {
+  --sk-dg-accent: var(--border-strong);
+  --sk-dg-tint: 4%;
+  position: absolute;
+  box-sizing: border-box;
+  border: 1.5px dashed color-mix(in oklab, var(--sk-dg-accent) 70%, transparent);
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--sk-dg-accent) var(--sk-dg-tint), transparent);
+  transition:
+    border-color var(--duration-base) var(--easing-move),
+    background-color var(--duration-base) var(--easing-move),
+    box-shadow var(--duration-base) var(--easing-move),
+    opacity var(--duration-base) var(--easing-move);
+}
+.sk-diagram-group--brand {
+  --sk-dg-accent: var(--amber);
+}
+.sk-diagram-group--info {
+  --sk-dg-accent: var(--chart-5);
+}
+.sk-diagram-group--success {
+  --sk-dg-accent: var(--success);
+}
+.sk-diagram-group--warn {
+  --sk-dg-accent: var(--amber-strong);
+}
+.sk-diagram-group--danger {
+  --sk-dg-accent: var(--danger);
+}
+.sk-diagram-group--depth-1 {
+  --sk-dg-tint: 7%;
+}
+.sk-diagram-group--depth-2 {
+  --sk-dg-tint: 10%;
+}
+.sk-diagram-group--depth-3 {
+  --sk-dg-tint: 13%;
+}
+.sk-diagram-group--solid {
+  border-style: solid;
+}
+.sk-diagram-group.is-highlighted {
+  --sk-dg-tint: 12%;
+  border-color: var(--sk-dg-accent);
+}
+.sk-diagram-group.is-selected {
+  border-color: var(--sk-dg-accent);
+  box-shadow: 0 0 0 3px color-mix(in oklab, var(--focus-ring) 35%, transparent);
+}
+.sk-diagram-group.is-dimmed {
+  --sk-dg-tint: 1.5%;
+  border-color: color-mix(in oklab, var(--sk-dg-accent) 25%, transparent);
+}
+.sk-diagram-group.is-dimmed .sk-diagram-group__header {
+  border-color: var(--border);
+  box-shadow: none;
+}
+.sk-diagram-group.is-dimmed .sk-diagram-group__label {
+  color: var(--ink-muted);
+  font-weight: 500;
+}
+.sk-diagram-group__header {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-width: calc(100% - 20px);
+  box-sizing: border-box;
+  padding: 5px 10px 6px;
+  border: 1px solid color-mix(in oklab, var(--sk-dg-accent) 35%, var(--border));
+  border-radius: var(--radius-sm);
+  background: color-mix(in oklab, var(--surface-raised) 92%, transparent);
+  box-shadow: 0 1px 2px color-mix(in oklab, var(--ink) 6%, transparent);
+  font-family: var(--font-sans);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.sk-diagram-group__header:active {
+  cursor: grabbing;
+}
+.sk-diagram-group__header:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+.sk-diagram-group__label {
+  overflow: hidden;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 18px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.sk-diagram-group__type {
+  overflow: hidden;
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 14px;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.sk-diagram-group__type::before {
+  content: "[";
+}
+.sk-diagram-group__type::after {
+  content: "]";
+}
+.sk-diagram-group__handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  box-sizing: border-box;
+  border: 1.5px solid var(--sk-dg-accent);
+  border-radius: 3px;
+  background: var(--surface-raised);
+  touch-action: none;
+}
+.sk-diagram-group__handle--nw {
+  top: -6px;
+  left: -6px;
+  cursor: nwse-resize;
+}
+.sk-diagram-group__handle--n {
+  top: -6px;
+  left: calc(50% - 5px);
+  cursor: ns-resize;
+}
+.sk-diagram-group__handle--ne {
+  top: -6px;
+  right: -6px;
+  cursor: nesw-resize;
+}
+.sk-diagram-group__handle--e {
+  top: calc(50% - 5px);
+  right: -6px;
+  cursor: ew-resize;
+}
+.sk-diagram-group__handle--se {
+  right: -6px;
+  bottom: -6px;
+  cursor: nwse-resize;
+}
+.sk-diagram-group__handle--s {
+  bottom: -6px;
+  left: calc(50% - 5px);
+  cursor: ns-resize;
+}
+.sk-diagram-group__handle--sw {
+  bottom: -6px;
+  left: -6px;
+  cursor: nesw-resize;
+}
+.sk-diagram-group__handle--w {
+  top: calc(50% - 5px);
+  left: -6px;
+  cursor: ew-resize;
+}
+.sk-diagram-note {
+  --sk-dn-paper: color-mix(in oklab, var(--amber-soft) 72%, var(--surface-raised));
+  --sk-dn-fold: 14px;
+  position: absolute;
+  box-sizing: border-box;
+  padding: 10px 14px 12px 12px;
+  border-radius: var(--radius-sm);
+  background:
+    linear-gradient(
+        225deg,
+        transparent calc(var(--sk-dn-fold) * 0.7),
+        color-mix(in oklab, var(--amber) 30%, var(--sk-dn-paper)) 0
+      )
+      top right / calc(var(--sk-dn-fold) * 1.42) calc(var(--sk-dn-fold) * 1.42) no-repeat,
+    var(--sk-dn-paper);
+  clip-path: polygon(
+    0 0,
+    calc(100% - var(--sk-dn-fold)) 0,
+    100% var(--sk-dn-fold),
+    100% 100%,
+    0 100%
+  );
+  box-shadow: inset 3px 0 0 color-mix(in oklab, var(--amber) 55%, transparent);
+  font-family: var(--font-sans);
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  transition:
+    opacity var(--duration-base) var(--easing-move),
+    filter var(--duration-base) var(--easing-move);
+}
+.sk-diagram-note:active {
+  cursor: grabbing;
+}
+.sk-diagram-note:focus-visible,
+.sk-diagram-note.is-selected {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+  clip-path: none;
+}
+.sk-diagram-note.is-dimmed {
+  opacity: 0.35;
+}
+.sk-diagram-note__text {
+  margin: 0;
+  color: var(--ink);
+  font-size: 12.5px;
+  line-height: 19px;
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+.sk-diagram-edge {
+  --sk-diagram-edge-color: var(--border-strong);
+  color: var(--sk-diagram-edge-color);
+}
+.sk-diagram-edge--brand {
+  --sk-diagram-edge-color: var(--amber-strong);
+}
+.sk-diagram-edge--info {
+  --sk-diagram-edge-color: var(--chart-5);
+}
+.sk-diagram-edge--success {
+  --sk-diagram-edge-color: var(--success);
+}
+.sk-diagram-edge--warn {
+  --sk-diagram-edge-color: var(--amber-text);
+}
+.sk-diagram-edge--danger {
+  --sk-diagram-edge-color: var(--danger);
+}
+.sk-diagram-edge__line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+.sk-diagram-edge--dotted .sk-diagram-edge__line {
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.sk-diagram-edge__marker {
+  fill: currentColor;
+  stroke: currentColor;
+  stroke-width: 1;
+  stroke-linejoin: round;
+}
+.sk-diagram-edge__marker--open {
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+.sk-diagram-edge__marker--dot {
+  stroke: none;
+}
+.sk-diagram-edge__marker--diamond {
+  stroke-width: 1.5;
+}
+.sk-diagram-edge__marker--diamond-open,
+.sk-diagram-edge__marker--triangle {
+  fill: none;
+  stroke-width: 1.5;
+}
+.sk-diagram-edge__end-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  fill: var(--ink-muted);
+  dominant-baseline: central;
+  pointer-events: none;
+  transition: opacity var(--duration-base) var(--easing-move);
+}
+.sk-diagram-edge.is-selected .sk-diagram-edge__end-label,
+.sk-diagram-edge.is-highlighted .sk-diagram-edge__end-label {
+  fill: var(--ink);
+}
+.sk-diagram-edge.is-dimmed .sk-diagram-edge__end-label {
+  opacity: 0;
+}
+.sk-diagram-edge__flow {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-dasharray: 2 14;
+  animation: sk-diagram-edge-flow 0.9s linear infinite;
+}
+@keyframes sk-diagram-edge-flow {
+  to {
+    stroke-dashoffset: -16;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sk-diagram-edge .sk-diagram-edge__flow {
+    animation: none;
+  }
+}
+@property --sk-diagram-beam-travel {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+@property --sk-diagram-beam-level {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+.sk-diagram-beam {
+  --sk-diagram-beam-color: var(--amber);
+  --sk-diagram-beam-travel: 0;
+  --sk-diagram-beam-level: 1;
+  pointer-events: none;
+}
+.sk-diagram-beam--travel {
+  animation: sk-diagram-beam-travel 3s linear infinite;
+}
+.sk-diagram-edge--dashed .sk-diagram-beam--travel {
+  --sk-diagram-beam-color: var(--chart-2);
+}
+.sk-diagram-edge--dotted .sk-diagram-beam--travel {
+  --sk-diagram-beam-color: var(--chart-3);
+}
+.sk-diagram-beam--back {
+  --sk-diagram-beam-color: var(--danger);
+  animation-direction: reverse;
+}
+.sk-diagram-edge--dashed .sk-diagram-beam--back {
+  --sk-diagram-beam-color: color-mix(in oklab, var(--chart-2) 55%, white);
+}
+.sk-diagram-edge--dotted .sk-diagram-beam--back {
+  --sk-diagram-beam-color: color-mix(in oklab, var(--chart-3) 55%, white);
+}
+.sk-diagram-beam--back .sk-diagram-beam__tail,
+.sk-diagram-beam--back .sk-diagram-beam__mid,
+.sk-diagram-beam--back .sk-diagram-beam__head,
+.sk-diagram-beam--back .sk-diagram-beam__glow {
+  stroke-dashoffset: calc(-1px * var(--sk-diagram-beam-travel));
+}
+.sk-diagram-beam--pulse {
+  animation: sk-diagram-beam-breathe 2.4s ease-in-out infinite;
+}
+.sk-diagram-beam path {
+  fill: none;
+  stroke: var(--sk-diagram-beam-color);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.sk-diagram-beam__pulse-ring {
+  stroke-width: 2.5;
+  opacity: var(--sk-diagram-beam-level);
+}
+.sk-diagram-beam__pulse-glow {
+  stroke-width: 10;
+  opacity: calc(var(--sk-diagram-beam-level) * 0.55);
+  filter: blur(5px);
+}
+@keyframes sk-diagram-beam-breathe {
+  0%,
+  100% {
+    --sk-diagram-beam-level: 0.3;
+  }
+  50% {
+    --sk-diagram-beam-level: 1;
+  }
+}
+.sk-diagram-beam__tail {
+  stroke-width: 2;
+  stroke-dasharray: 24 76;
+  stroke-dashoffset: calc(-1px * var(--sk-diagram-beam-travel));
+  opacity: 0.25;
+}
+.sk-diagram-beam__mid {
+  stroke-width: 2.5;
+  stroke-dasharray: 14 86;
+  stroke-dashoffset: calc(-1px * (var(--sk-diagram-beam-travel) + 10));
+  opacity: 0.6;
+}
+.sk-diagram-beam__head {
+  stroke-width: 3;
+  stroke-dasharray: 6 94;
+  stroke-dashoffset: calc(-1px * (var(--sk-diagram-beam-travel) + 18));
+}
+.sk-diagram-beam__glow {
+  stroke-width: 10;
+  stroke-dasharray: 18 82;
+  stroke-dashoffset: calc(-1px * (var(--sk-diagram-beam-travel) + 6));
+  opacity: 0.45;
+  filter: blur(5px);
+}
+@keyframes sk-diagram-beam-travel {
+  to {
+    --sk-diagram-beam-travel: 100;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sk-diagram-beam {
+    --sk-diagram-beam-level: 0.5;
+    animation: none;
+  }
+  .sk-diagram-beam__tail,
+  .sk-diagram-beam__mid,
+  .sk-diagram-beam__head {
+    display: none;
+  }
+  .sk-diagram-beam__glow {
+    stroke-dasharray: none;
+    opacity: 0.3;
+  }
+}
+.sk-diagram-edge.is-highlighted .sk-diagram-edge__line {
+  stroke-width: 2.25;
+}
+.sk-diagram-edge.is-highlighted.sk-diagram-edge--neutral {
+  --sk-diagram-edge-color: var(--ink-muted);
+}
+.sk-diagram-edge.is-selected {
+  --sk-diagram-edge-color: var(--amber-strong);
+}
+.sk-diagram-edge.is-selected .sk-diagram-edge__line {
+  stroke-width: 2.5;
+}
+.sk-diagram-edge__line,
+.sk-diagram-edge__marker,
+.sk-diagram-edge__flow {
+  transition:
+    opacity var(--duration-base) var(--easing-move),
+    stroke-width var(--duration-fast) var(--easing-move);
+}
+.sk-diagram-edge.is-dimmed .sk-diagram-edge__line,
+.sk-diagram-edge.is-dimmed .sk-diagram-edge__marker,
+.sk-diagram-edge.is-dimmed .sk-diagram-edge__flow {
+  opacity: 0.2;
+}
+.sk-diagram-edge.is-dimmed .sk-diagram-edge__label-box {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity var(--duration-base) var(--easing-exit),
+    visibility 0s linear var(--duration-base);
+}
+.sk-diagram-edge__hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 14;
+  pointer-events: stroke;
+  cursor: pointer;
+  outline: none;
+}
+.sk-diagram-edge__hit:focus-visible {
+  stroke: var(--focus-ring);
+  stroke-opacity: 0.35;
+}
+.sk-diagram-edge.is-interactive:hover .sk-diagram-edge__line {
+  stroke-width: 2.25;
+}
+.sk-diagram-edge__label-box {
+  overflow: visible;
+  pointer-events: none;
+  transition:
+    opacity var(--duration-base) var(--easing-enter),
+    visibility 0s;
+}
+.sk-diagram-edge__label-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.sk-diagram-edge__label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 200px;
+  padding: 3px 10px;
+  box-sizing: border-box;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--ink);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+.sk-diagram-edge.is-selected .sk-diagram-edge__label,
+.sk-diagram-edge.is-highlighted .sk-diagram-edge__label {
+  border-color: var(--sk-diagram-edge-color);
+}
+.sk-diagram-edge__tech {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 14px;
+  color: var(--ink-muted);
+}
+.sk-diagram-edge__swatch {
+  display: inline-block;
+  width: 48px;
+  height: 16px;
+  overflow: visible;
+  vertical-align: middle;
+}
+.sk-dcanvas__edges {
+  z-index: 1;
+}
+.sk-dcanvas__node {
+  position: absolute;
+  z-index: 2;
+}
+.sk-dcanvas__note {
+  z-index: 3;
+}
+.sk-dcanvas.is-readonly .sk-diagram-node__handle {
+  display: none;
+}
+.sk-dcanvas__temp {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 2;
+  stroke-dasharray: 6 5;
+  stroke-linecap: round;
+}
+.sk-dcanvas__pointer {
+  transition: opacity var(--duration-base) var(--easing-move);
+}
+.sk-dcanvas__pointer.is-dimmed {
+  opacity: 0.25;
+}
+.sk-dcanvas__pointer-line {
+  fill: none;
+  stroke: color-mix(in oklab, var(--amber) 55%, var(--ink-muted));
+  stroke-width: 1.25;
+  stroke-dasharray: 1 5;
+  stroke-linecap: round;
+}
+.sk-dcanvas__pointer-dot {
+  fill: color-mix(in oklab, var(--amber) 55%, var(--ink-muted));
+}
+.sk-dcanvas__legend--top-left {
+  left: 12px;
+  top: 12px;
+}
+.sk-dcanvas__legend--top-right {
+  right: 12px;
+  top: 12px;
+}
+.sk-dcanvas__legend--bottom-left {
+  left: 12px;
+  bottom: 64px;
+}
+.sk-dcanvas__legend--bottom-right {
+  right: 12px;
+  bottom: 124px;
+}
+.sk-mini__frame {
+  fill: none;
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  stroke-dasharray: 2 2;
+}
+.sk-diagram-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-sizing: border-box;
+  width: fit-content;
+  min-width: 176px;
+  max-width: 100%;
+  padding: 10px 12px 12px;
+  font-family: var(--font-sans);
+  color: var(--ink);
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-overlay);
+}
+.sk-diagram-legend__title {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 16px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+}
+.sk-diagram-legend__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.sk-diagram-legend__list + .sk-diagram-legend__list {
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+}
+.sk-diagram-legend__item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12.5px;
+  line-height: 18px;
+}
+.sk-diagram-legend__swatch {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 20px;
+}
+.sk-diagram-legend__swatch .sk-diagram-edge__swatch {
+  width: 40px;
+  height: 14px;
+}
+.sk-diagram-legend__label {
+  min-width: 0;
+}
+.sk-diagram-node__stereotype {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 11px;
+  line-height: 16px;
+  font-style: italic;
+  color: var(--dn-accent);
+}
+.sk-diagram-node__content--compartments {
+  justify-content: flex-start;
+  align-items: stretch;
+  gap: 0;
+}
+.sk-diagram-node__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 12px;
+}
+.sk-diagram-node__title--underlined {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.sk-diagram-node__section {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 6px 12px;
+  border-top: 1px solid var(--dn-stroke);
+  text-align: left;
+}
+.sk-diagram-node__section-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dn-accent);
+}
+.sk-diagram-node__line {
+  min-height: 17px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 17px;
+  color: var(--ink-muted);
+}
+.sk-diagram-node--state .sk-diagram-node__section-title,
+.sk-diagram-node--state .sk-diagram-node__line {
+  font-family: var(--font-sans);
+}
+.sk-diagram-node__tab {
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+.sk-diagram-node__tab .sk-diagram-node__title {
+  font-size: 13px;
+  line-height: 18px;
+}
+.sk-diagram-node__content--package {
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0;
+  text-align: left;
+}
+.sk-diagram-node--actor .sk-diagram-node__content {
+  justify-content: flex-start;
+}
+.sk-diagram-node--actor .sk-diagram-node__title,
+.sk-diagram-node--usecase .sk-diagram-node__title {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  white-space: normal;
+  font-size: 14px;
+  line-height: 18px;
+}
+.sk-diagram-node--actor .sk-diagram-node__detail {
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.sk-diagram-node--initial .sk-diagram-node__body,
+.sk-diagram-node--bar .sk-diagram-node__body,
+.sk-diagram-node--final .sk-diagram-node__body:nth-of-type(2),
+.sk-diagram-node-swatch--initial .sk-diagram-node__body,
+.sk-diagram-node-swatch--bar .sk-diagram-node__body,
+.sk-diagram-node-swatch--final .sk-diagram-node__body:nth-of-type(2) {
+  fill: color-mix(in oklab, var(--dn-stroke) 30%, var(--ink));
+  stroke: color-mix(in oklab, var(--dn-stroke) 30%, var(--ink));
+}
+.sk-diagram-node--final .sk-diagram-node__body:first-of-type,
+.sk-diagram-node-swatch--final .sk-diagram-node__body:first-of-type {
+  fill: var(--surface-raised);
+  stroke: color-mix(in oklab, var(--dn-stroke) 30%, var(--ink));
+  stroke-width: 2;
+}
+.sk-diagram-node--actor:focus-visible .sk-diagram-node__detail {
+  stroke: var(--focus-ring);
+}
+.sk-diagram-node--actor.is-highlighted .sk-diagram-node__detail {
+  stroke: color-mix(in oklab, var(--amber) 70%, var(--dn-stroke));
+}
+.sk-diagram-node--actor.is-selected .sk-diagram-node__detail,
+.sk-diagram-node.is-selected.sk-diagram-node--final .sk-diagram-node__body {
+  stroke: var(--amber);
+}
+.sk-diagram-node.is-selected .sk-diagram-node__section {
+  border-top-color: var(--amber);
+}
